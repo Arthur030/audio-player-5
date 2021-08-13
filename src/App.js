@@ -1,6 +1,7 @@
 import React, { useState, useRef } from 'react';
 import { FaPlay, FaPause, FaVolumeMute, FaVolumeUp } from 'react-icons/fa'
 import './App.css';
+import 'regenerator-runtime/runtime'
 
 function App( { domElement } ) {
 
