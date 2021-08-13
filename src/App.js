@@ -1,5 +1,5 @@
-import React, { useState, useRef, useEffect } from 'react';
-import { FaPlay, FaPause, FaBackward, FaForward, FaVolumeMute, FaVolumeUp } from 'react-icons/fa'
+import React, { useState, useRef } from 'react';
+import { FaPlay, FaPause, FaVolumeMute, FaVolumeUp } from 'react-icons/fa'
 import './App.css';
 
 function App( { domElement } ) {
@@ -13,8 +13,6 @@ function App( { domElement } ) {
   const config = domElement.getAttribute("data-player")
   const configObj = JSON.parse(config)
   const {audio, img, artist, title} = configObj
-  
-  console.log(configObj)
 
   const audioRef = useRef();
   const progressBarRef = useRef();
