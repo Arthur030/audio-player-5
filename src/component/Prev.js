@@ -1,10 +1,12 @@
 import React from 'react'
-import { MdReplay } from 'react-icons/md'
+import { FaFastBackward } from 'react-icons/fa'
 
 const Prev = ({prev}) => {
     return (
-        <button onClick={prev}>
-            <MdReplay />
+        <button 
+        className="prev"
+        onClick={prev}>
+            <FaFastBackward className="svg-prev" />
         </button>
     )
 }

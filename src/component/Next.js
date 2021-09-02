@@ -1,10 +1,12 @@
 import React from 'react'
-import { MdForward30 } from 'react-icons/md'
+import { FaFastForward } from 'react-icons/fa'
 
 const Next = ({next}) => {
     return (
-        <button onClick={next}>
-            <MdForward30 />
+        <button 
+        className="next"
+        onClick={next}>
+            <FaFastForward className="svg-next"/>
         </button>
     )
 }

@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react'
+import React, { useState, useRef, useEffect } from 'react'
 import './App.css'
 // fix the errors with async await when running build:widget
 import 'regenerator-runtime/runtime'
@@ -24,27 +24,33 @@ function App( { domElement } ) {
   const [currentTime, setCurrentTime] = useState(0)
   // toggle mute/unmute
   const [isMuted, setIsMuted] = useState(true)
+  // when set to true, sends data to backend
+  const [data, setData] = useState(false)
 
   const [trackIndex, setTrackIndex] = useState(0)
 
-  // attribute used to config the audio, title, src of the player 
+  // attribute used to config the src, title, author of the player 
   const config = domElement.getAttribute("data-player")
   // convert the attribute into an obj
   const configObj = JSON.parse(config)
   // 
-  const {audio, img, artist, title} = configObj[trackIndex]
-  console.log(configObj)
+  const {audio, img, author, title} = configObj[trackIndex]
   // ref in the <audio />
   const audioRef = useRef()
   //
   const progressBarRef = useRef()
   const volume = useRef()
 
+  // update the progress bar to the currentTime 
+  useEffect(() => {
+    progressBarRef.current.value = Math.floor(audioRef.current.currentTime)
+  }, [currentTime])
+
   // sends data to nodejs when clicking test button
   const submitTrack = () => {
-    console.log(artist)
+    console.log(author)
     Axios.post('http://localhost:3001/create', {
-      artist: artist,
+      author: author,
       title: title,
       audio: audio
     })
@@ -61,9 +67,9 @@ function App( { domElement } ) {
       const prevState = isPlaying;
       setIsPlaying(!prevState);
       if (!prevState) {
-        await play();
+        await play()
       } else {
-        pause();
+        pause()
       }
     } catch (err) {
 
@@ -73,10 +79,13 @@ function App( { domElement } ) {
   const play = async () => {
     try {
       await audioRef.current.play()
-      setCurrentTime(progressBarRef.current.value);
-      audioRef.current.currentTime = progressBarRef.current.value;
-      // console.log(audioRef.current.currentTime, "currentTime", calculateTime(audioRef.current.duration), "duration")
-
+      setCurrentTime(progressBarRef.current.value)
+      audioRef.current.currentTime = progressBarRef.current.value
+      if(!data){
+        submitTrack()
+        console.log("sends data")
+      }
+      setData(true)
     } catch {
       console.log("play promise failed, retrying...")
     }
@@ -125,16 +134,13 @@ function App( { domElement } ) {
 
 
   const next = () => {
-    setCurrentTime(progressBarRef.current.value + 30);
-    audioRef.current.currentTime = progressBarRef.current.value;
+    progressBarRef.current.value = Number(progressBarRef.current.value) + 30
+    changeAudioToProgressBar()
   }
 
   const prev = () => {
-    if (trackIndex -1 < 0) {
-      setTrackIndex(configObj.length -1 || configObj.length > 1);
-    } else {
-      setTrackIndex(trackIndex - 1);
-    }
+    progressBarRef.current.value = Number(progressBarRef.current.value) - 30
+    changeAudioToProgressBar()
   }
 
   return (
@@ -146,14 +152,16 @@ function App( { domElement } ) {
       setCurrentTime={setCurrentTime}
       setDuration={setDuration}
       />
-      <Image
-      img={img}
-      />
       <div className="player-container">
+        <div className="info-container">
         <TrackInfo
         title={title}
-        artist={artist}
+        author={author}
         />
+        <Image
+        img={img}
+        />
+        </div>
         <div className="button-container">
           <Prev
           prev={prev}
@@ -186,9 +194,6 @@ function App( { domElement } ) {
           calculateTime={calculateTime}
         />
       </div>
-      <button
-        onClick={submitTrack}
-      />
     </div>
   )
 }

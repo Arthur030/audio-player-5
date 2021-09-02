@@ -9,7 +9,8 @@ const audio = ({
         src={audio} 
         preload="metadata"
         onLoadedMetadata={onLoadedMetadata}
-        onTimeUpdate={ () => setCurrentTime(audioRef.current.currentTime, setDuration(audioRef.current.duration))}
+        onTimeUpdate={ () => setCurrentTime(audioRef.current.currentTime, 
+                            setDuration(audioRef.current.duration))}
         />
     )
 }
