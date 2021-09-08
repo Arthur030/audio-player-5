@@ -3,6 +3,8 @@ import { FaPlay, FaPause } from 'react-icons/fa'
 
 
 const PlayPause = ({ 
+    // togglePlayPause is a function that switch between play and pause
+    // isPlaying is a state to keep track if the audio is playing or not
     togglePlayPause, isPlaying
     }) => {
 
@@ -17,3 +19,9 @@ const PlayPause = ({
 }
 
 export default PlayPause
+
+
+
+
+
+

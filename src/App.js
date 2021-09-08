@@ -62,6 +62,7 @@ function App( { domElement } ) {
     setDuration(seconds)
   }
 
+  // takes care of the play button to switch between play or pause
   const togglePlayPause = async () => {
     try {
       const prevState = isPlaying;

@@ -1,7 +1,11 @@
 import React from 'react'
 
-const audio = ({
-    audioRef, audio, onLoadedMetadata, setCurrentTime, setDuration
+const Audio = ({
+    // audioRef useRef to get the .current of the audio
+    // audio is the source of the audio
+    // onLoadedMetadata is an event listener used to load the duration when we first
+    // load the page
+    audioRef, audio, onLoadedMetadata, setCurrentTime
 }) => {
     return (
         <audio 
@@ -9,10 +13,11 @@ const audio = ({
         src={audio} 
         preload="metadata"
         onLoadedMetadata={onLoadedMetadata}
-        onTimeUpdate={ () => setCurrentTime(audioRef.current.currentTime, 
-                            setDuration(audioRef.current.duration))}
+        onTimeUpdate={ () => setCurrentTime(audioRef.current.currentTime)}
         />
     )
 }
 
-export default audio
+export default Audio
+
+
